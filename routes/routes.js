@@ -60,7 +60,7 @@ app.get('/books/:id',async(req,res,next)=>{
                 <!DOCTYPE html>
                 <html>
                     ${header()}
-                    <body>
+                    <body id="book-detail">
                         <nav>
                             <a href='/'>Home</a>
                         //   <a href="/books/${nextBookId}">Next</a>

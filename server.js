@@ -1,4 +1,4 @@
-const {client, syncAndSeed, getBookData, getBook, nextBookIdMethod, addBook} = require('./db');
+const {client, syncAndSeed, getBookData, getBook, nextBookIdMethod} = require('./db');
 const express = require('express');
 const app = express();
 

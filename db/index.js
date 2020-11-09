@@ -38,15 +38,15 @@ const nextBookIdMethod = async(bookid)=>{
     }
 }
 
-const addBook = async(obj)=>{
-    const authorExists = Number((await client.query(`SELECT COUNT(author) FROM scifi_authors WHERE author = ${obj.author}`)).rows[0].count);
-    console.log(authorExists);
-    return authorExists;
-    // if(authorExists === 0){
-    //     (await client.query('INSERT INTO scifi_authors(author) VALUES($1) RETURNING *;',[name])).rows[0];
-    // }
-    // return (await client.query('INSERT INTO scifi_books(title,author_id,year,img,review,summary) VALUES($1,$2,$3,$4,$5,$6) RETURNING *;',[book,`SELECT id FROM scifi_authors WHERE author = ${name};`,year,img,review,summary])).rows[0];
-}
+// const addBook = async(obj)=>{
+//     const authorExists = Number((await client.query(`SELECT COUNT(author) FROM scifi_authors WHERE author = ${obj.author}`)).rows[0].count);
+//     console.log(authorExists);
+//     return authorExists;
+//     // if(authorExists === 0){
+//     //     (await client.query('INSERT INTO scifi_authors(author) VALUES($1) RETURNING *;',[name])).rows[0];
+//     // }
+//     // return (await client.query('INSERT INTO scifi_books(title,author_id,year,img,review,summary) VALUES($1,$2,$3,$4,$5,$6) RETURNING *;',[book,`SELECT id FROM scifi_authors WHERE author = ${name};`,year,img,review,summary])).rows[0];
+// }
 
 module.exports = {
     client,
@@ -54,5 +54,4 @@ module.exports = {
     getBookData,
     getBook,
     nextBookIdMethod,
-    addBook
 }
