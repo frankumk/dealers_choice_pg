@@ -1,15 +1,8 @@
-const {client, syncAndSeed, getBookData, getBook, nextBookIdMethod, addBook} = require('./db');
-const express = require('express');
-const app = express();
+const { client } = require("../db");
 
-const static = require('static');
-const path = require('path');
-const morgan = require('morgan');
+const app = require('express').Router();
 
-app.use(morgan('dev'));
-
-app.use(express.static(path.join(__dirname,'./assets')));
-
+module.exports = app;
 
 const header = ()=>{
     return `
@@ -93,21 +86,3 @@ app.use((err,req,res,next)=>{
     console.log(err);
     res.status(404).send(`That book does not exist, would you like to add it to the database? <a href="\books\add">Add Book</a>`);
 });
-
-
-const setUp = async() =>{
-    try{
-        await client.connect();
-        await syncAndSeed();
-        //console.log(await getBookData());
-        //console.log(await getBook(1));
-        
-        const port = process.env.PORT || 3000;
-        app.listen(port,()=>console.log(`listening on port: ${port}`));
-    }catch(ex){
-        console.log(ex);
-    }
-
-}
-
-setUp();

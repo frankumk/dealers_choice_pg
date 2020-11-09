@@ -11,19 +11,31 @@ const syncAndSeed = async()=>{
 
 const getBookData = async()=>{
     return (await client.query(`
-    SELECT title,author,year,img,review,summary 
+    SELECT scifi_books.id,title,author,year,img,review,summary 
     FROM scifi_books 
     JOIN scifi_authors 
     ON author_id=scifi_authors.id;`)).rows;
 }
 
-const getBook = async(id)=>{
+const getBook = async(bookid)=>{
     return (await client.query(`
-    SELECT title,author,year,review,summary
+    SELECT scifi_books.id,title,author,year,review,summary
     FROM scifi_books
     JOIN scifi_authors
     ON author_id=scifi_authors.id
-    WHERE scifi_books.id = ${id};`)).rows[0];
+    WHERE scifi_books.id = ${bookid};`)).rows[0];
+}
+
+const nextBookIdMethod = async(bookid)=>{
+    const rows = await client.query(`
+        SELECT COUNT(*) AS "Number of Rows" FROM scifi_books;
+    `)['Number of Rows'];
+    console.log(rows);
+    if(bookid >= rows){ 
+        return 1;
+    }else{
+        return bookid + 1;
+    }
 }
 
 const addBook = async({book,name,year,img,review,summary})=>{
@@ -38,5 +50,6 @@ module.exports = {
     syncAndSeed,
     getBookData,
     getBook,
+    nextBookIdMethod,
     addBook
 }
