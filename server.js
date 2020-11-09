@@ -1,4 +1,4 @@
-const {client, syncAndSeed, getBookData, getBook, nextBookIdMethod} = require('./db');
+const {client, syncAndSeed, getBookData, getBook, addBook, nextBookIdMethod} = require('./db');
 const express = require('express');
 const app = express();
 
@@ -9,6 +9,7 @@ const morgan = require('morgan');
 app.use(morgan('dev'));
 
 app.use(express.static(path.join(__dirname,'./assets')));
+app.use(express.urlencoded({extended:false}));
 
 
 const header = ()=>{
@@ -70,7 +71,8 @@ app.get('/books/:id',async(req,res,next)=>{
                     <body>
                         <nav>
                             <a href='/'>Home</a>
-                        //   <a href="/books/${nextBookId}">Next</a>
+                        //  <a href="/books/${nextBookId}">Next</a>
+                        //  <a href="/add">Add Book</a>
                         </nav>
                         <h1>${book.title}</h1>
                         <h2>${book.author}</h2>
@@ -89,9 +91,42 @@ app.get('/books/:id',async(req,res,next)=>{
     }
 });
 
+app.get("/add",(req,res,next)=>{
+    try{
+        res.send(`
+        <!DOCTYPE html>
+                <html>
+                    ${header()}
+                    <body>
+                        <nav>
+                            <a href='/'>Home</a>
+                        </nav>
+                        <h1>Add a Book to the List</h1>
+                        <form id='addBookForm' method='POST'>
+                            <label for='title'>Book Title</label>
+                            <input type='text' name='Book Title' id='title' required>
+                            <label for='author'>Book Author</label>
+                            <input type='text' name='uthor' id='author' required>
+                            <label for='year'>Year Published</label>
+                            <input type='text' name='Year' id='year'>
+                            <label for='review'>Review(*)</label>
+                            <input type='text' name='Review' id='review'>
+                            <label for='summary'>Book Summary</label>
+                            <input type='text' name='Summary' id='summary'>
+                            <label for='bookCover'>Book Cover</label>
+                            <input type='file' name='Book Cover' id='bookCover'>
+                            <button type='submit' form='addBookForm' value="Submit">Add Book</button>
+                        </form>
+                </html>
+        `);
+    }catch(err){
+        next(err);
+    }
+});
+
 app.use((err,req,res,next)=>{
     console.log(err);
-    res.status(404).send(`That book does not exist, would you like to add it to the database? <a href="\books\add">Add Book</a>`);
+    res.status(404).send(`That book does not exist, would you like to add it to the database? <a href="\add">Add Book</a>`);
 });
 
 
