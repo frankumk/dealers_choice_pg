@@ -99,8 +99,6 @@ const setUp = async() =>{
     try{
         await client.connect();
         await syncAndSeed();
-        //console.log(await getBookData());
-        //console.log(await getBook(1));
         
         const port = process.env.PORT || 3000;
         app.listen(port,()=>console.log(`listening on port: ${port}`));

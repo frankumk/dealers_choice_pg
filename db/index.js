@@ -27,22 +27,25 @@ const getBook = async(bookid)=>{
 }
 
 const nextBookIdMethod = async(bookid)=>{
-    const rows = await client.query(`
-        SELECT COUNT(*) AS "Number of Rows" FROM scifi_books;
-    `)['Number of Rows'];
-    console.log(rows);
-    if(bookid >= rows){ 
+    const robes = Number((await client.query(`
+        SELECT COUNT(*) FROM scifi_books;
+    `)).rows[0].count);
+    console.log(robes);
+    if(bookid >= robes){ 
         return 1;
     }else{
         return bookid + 1;
     }
 }
 
-const addBook = async({book,name,year,img,review,summary})=>{
-//    if(ISNULL(`SELECT author FROM scifi_authors WHERE author = ${name}`)){
-//     (await client.query('INSERT INTO scifi_authors(author) VALUES($1) RETURNING *;',[name])).rows[0];
-//    }
-//     return (await client.query('INSERT INTO scifi_books(title,author_id,year,img,review,summary) VALUES($1,$2,$3,$4,$5,$6) RETURNING *;',[book,`SELECT id FROM scifi_authors WHERE author = ${name};`,year,img,review,summary])).rows[0];
+const addBook = async(obj)=>{
+    const authorExists = Number((await client.query(`SELECT COUNT(author) FROM scifi_authors WHERE author = ${obj.author}`)).rows[0].count);
+    console.log(authorExists);
+    return authorExists;
+    // if(authorExists === 0){
+    //     (await client.query('INSERT INTO scifi_authors(author) VALUES($1) RETURNING *;',[name])).rows[0];
+    // }
+    // return (await client.query('INSERT INTO scifi_books(title,author_id,year,img,review,summary) VALUES($1,$2,$3,$4,$5,$6) RETURNING *;',[book,`SELECT id FROM scifi_authors WHERE author = ${name};`,year,img,review,summary])).rows[0];
 }
 
 module.exports = {
