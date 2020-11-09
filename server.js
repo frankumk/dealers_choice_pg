@@ -104,17 +104,17 @@ app.get("/add",(req,res,next)=>{
                         <h1>Add a Book to the List</h1>
                         <form id='addBookForm' method='POST'>
                             <label for='title'>Book Title</label>
-                            <input type='text' name='Book Title' id='title' required>
+                            <input type='text' name='title' id='title' required>
                             <label for='author'>Book Author</label>
-                            <input type='text' name='uthor' id='author' required>
+                            <input type='text' name='author' id='author' required>
                             <label for='year'>Year Published</label>
-                            <input type='text' name='Year' id='year'>
+                            <input type='text' name='year' id='year'>
                             <label for='review'>Review(*)</label>
-                            <input type='text' name='Review' id='review'>
+                            <input type='text' name='review' id='review'>
                             <label for='summary'>Book Summary</label>
-                            <input type='text' name='Summary' id='summary'>
+                            <input type='text' name='summary' id='summary'>
                             <label for='bookCover'>Book Cover</label>
-                            <input type='file' name='Book Cover' id='bookCover'>
+                            <input type='file' name='img' id='bookCover'>
                             <button type='submit' form='addBookForm' value="Submit">Add Book</button>
                         </form>
                 </html>
@@ -124,11 +124,21 @@ app.get("/add",(req,res,next)=>{
     }
 });
 
+app.post("/add",async(req,res,next)=>{
+    res.send(req.body);
+    // try{
+    //     await addBook(req.body);
+    //     res.redirect('/add');//prevents you trying to insert data again
+
+    // }catch(ex){
+    //     next(ex);
+    // }
+});
+
 app.use((err,req,res,next)=>{
     console.log(err);
     res.status(404).send(`That book does not exist, would you like to add it to the database? <a href="\add">Add Book</a>`);
 });
-
 
 const setUp = async() =>{
     try{
